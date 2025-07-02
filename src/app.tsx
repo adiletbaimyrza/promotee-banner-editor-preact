@@ -1,43 +1,49 @@
 import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import viteLogo from '/vite.svg'
-import './app.css'
+import { BannerControls } from './components/BannerControls'
+import { BannerPreview } from './components/BannerPreview'
+import { useBannerCanvas } from './hooks/useBannerCanvas'
+import { promotionLevels } from './constants'
+
+const INITIAL = {
+  level: promotionLevels[0].level,
+  name: '',
+}
 
 export function App() {
-  const [count, setCount] = useState(0)
+  const [level, setLevel] = useState(INITIAL.level)
+  const [name, setName] = useState(INITIAL.name)
+  const [photo, setPhoto] = useState<string | null>(null)
+  const [zoom, setZoom] = useState(1)
+  const [offset, setOffset] = useState({ x: 0, y: 0 })
+
+  const { canvasRef, handleDownload } = useBannerCanvas({
+    level,
+    name,
+    photo,
+    zoom,
+    offset,
+  })
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://preactjs.com" target="_blank">
-          <img src={preactLogo} class="logo preact" alt="Preact logo" />
-        </a>
-      </div>
-      <h1>Vite + Preact</h1>
-      <div class="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/app.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p>
-        Check out{' '}
-        <a
-          href="https://preactjs.com/guide/v10/getting-started#create-a-vite-powered-preact-app"
-          target="_blank"
-        >
-          create-preact
-        </a>
-        , the official Preact + Vite starter
-      </p>
-      <p class="read-the-docs">
-        Click on the Vite and Preact logos to learn more
-      </p>
-    </>
+    <div className="flex flex-col md:flex-row p-8 gap-8 bg-slate-900 min-h-screen">
+      <BannerControls
+        level={level}
+        name={name}
+        onLevelChange={setLevel}
+        onNameChange={setName}
+        onPhotoChange={setPhoto}
+        onDownload={handleDownload}
+        zoom={zoom}
+        onZoomChange={setZoom}
+        photo={photo}
+      />
+      <BannerPreview
+        canvasRef={canvasRef}
+        offset={offset}
+        setOffset={setOffset}
+        zoom={zoom}
+        photo={photo}
+      />
+    </div>
   )
 }
