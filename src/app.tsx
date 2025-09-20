@@ -7,6 +7,7 @@ import { promotionLevels } from './constants'
 const INITIAL = {
   level: promotionLevels[0].level,
   name: '',
+  title: '',
 }
 
 export function App() {
@@ -15,10 +16,12 @@ export function App() {
   const [photo, setPhoto] = useState<string | null>(null)
   const [zoom, setZoom] = useState(1)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
+  const [title, setTitle] = useState(INITIAL.title)
 
   const { canvasRef, handleDownload } = useBannerCanvas({
     level,
     name,
+    title,
     photo,
     zoom,
     offset,
@@ -29,6 +32,8 @@ export function App() {
       <BannerControls
         level={level}
         name={name}
+        title={title}
+        onTitleChange={setTitle}
         onLevelChange={setLevel}
         onNameChange={setName}
         onPhotoChange={setPhoto}

@@ -1,11 +1,14 @@
 import { LevelSelector } from './LevelSelector'
 import { NameInput } from './NameInput'
 import { PhotoUpload } from './PhotoUpload'
+import { TitleInput } from './TitleInput'
 
 type BannerControlsProps = {
   level: string
   name: string
   zoom: number
+  title: string
+  onTitleChange: (title: string) => void
   onLevelChange: (level: string) => void
   onNameChange: (name: string) => void
   onPhotoChange: (photo: string) => void
@@ -17,6 +20,8 @@ type BannerControlsProps = {
 export function BannerControls({
   level,
   name,
+  title,
+  onTitleChange,
   onLevelChange,
   onNameChange,
   onPhotoChange,
@@ -26,11 +31,12 @@ export function BannerControls({
   photo,
 }: BannerControlsProps) {
   return (
-    <div className="flex flex-col gap-4 w-full md:w-80 bg-slate-800 p-6 rounded-lg shadow-lg">
+    <div className="flex flex-col gap-2 w-full md:w-80 bg-slate-800 p-4 rounded-lg shadow-lg">
       <h2 className="text-white text-xl font-bold">Banner Creator</h2>
 
       <LevelSelector level={level} onLevelChange={onLevelChange} />
       <NameInput name={name} onNameChange={onNameChange} />
+      <TitleInput title={title} onTitleChange={onTitleChange} />
       <PhotoUpload onPhotoChange={onPhotoChange} />
 
       {photo && (

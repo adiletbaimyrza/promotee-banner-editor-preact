@@ -33,7 +33,7 @@ export function PhotoUpload({ onPhotoChange }: PhotoUploadProps) {
         onChange={(e) => handleFile(e.currentTarget.files)}
       />
       <button
-        className={`border-2 border-dashed rounded-lg p-6 cursor-pointer transition ${
+        className={`border-2 border-dashed rounded-lg p-2 cursor-pointer transition ${
           isDragOver
             ? 'border-fuchsia-400 bg-fuchsia-400/10'
             : 'border-slate-500 hover:border-fuchsia-400 hover:bg-fuchsia-400/10'
@@ -52,7 +52,7 @@ export function PhotoUpload({ onPhotoChange }: PhotoUploadProps) {
         }}
         onClick={() => document.getElementById('photo-input')?.click()}
       >
-        <div className="flex flex-col items-center gap-2 text-white">
+        <div className="flex flex-col items-center gap-1 text-white">
           <div className="w-10 h-10 border-2 text-gray-400 border-gray-400 rounded-full flex items-center justify-center">
             <span className="w-10 h-10 text-center leading-9.5 text-xl align-center">
               +

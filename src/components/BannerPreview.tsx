@@ -84,7 +84,7 @@ export const BannerPreview = ({
       >
         <canvas
           ref={canvasRef}
-          className="border border-slate-700 bg-slate-950 max-w-full max-h-[600px] object-contain rounded-lg shadow"
+          className="border border-slate-700 bg-slate-950 max-w-full max-h-[500px] object-contain rounded-lg shadow"
         />
       </div>
     </div>
