@@ -58,12 +58,12 @@ export const useBannerCanvas = ({
             120,
             offsetByLevel
           )
-          drawText(ctx, name, lvl.color, canvas, offsetByLevel + 50, 72)
-          drawText(ctx, title, lvl.color, canvas, offsetByLevel + 120, 50)
+          drawText(ctx, name, lvl.color, canvas, offsetByLevel + 50, 72, 1200)
+          drawText(ctx, title, lvl.color, canvas, offsetByLevel + 120, 50, 1200)
         }
       } else {
-        drawText(ctx, name, lvl.color, canvas, offsetByLevel + 50, 72)
-        drawText(ctx, title, lvl.color, canvas, offsetByLevel + 120, 50)
+        drawText(ctx, name, lvl.color, canvas, offsetByLevel + 50, 72, 1200)
+        drawText(ctx, title, lvl.color, canvas, offsetByLevel + 120, 50, 1200)
       }
     }
   }, [level, name, title, photo, zoom, offset])
@@ -184,17 +184,65 @@ export const useBannerCanvas = ({
     color: string,
     canvas: HTMLCanvasElement,
     offsetByLevel: number,
-    fontSize: number
+    fontSize: number,
+    maxWidth?: number
   ) {
     ctx.textAlign = 'center'
     ctx.font = `800 italic ${fontSize}px Arial`
     ctx.fillStyle = color
-    ctx.fillText(
-      text.toUpperCase(),
-      canvas.width / 2,
-      canvas.height * 0.834 + offsetByLevel
-    )
+
+    const upperText = text.toUpperCase()
+    const x = canvas.width / 2
+    const baseY = canvas.height * 0.834 + offsetByLevel
+
+    if (!maxWidth) {
+      ctx.fillText(upperText, x, baseY)
+      return
+    }
+
+    const lines = wrapText(ctx, upperText, maxWidth)
+    const lineHeight = fontSize * 1.2
+
+    const totalHeight = lines.length * lineHeight
+    const startY = baseY - totalHeight / 2 + lineHeight / 2
+
+    lines.forEach((line, index) => {
+      const y = startY + index * lineHeight
+      ctx.fillText(line, x, y)
+    })
   }
+
+  function wrapText(
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    maxWidth: number
+  ): string[] {
+    const words = text.split(' ')
+    const lines: string[] = []
+    let currentLine = ''
+
+    for (let i = 0; i < words.length; i++) {
+      const testLine = currentLine + (currentLine ? ' ' : '') + words[i]
+      const metrics = ctx.measureText(testLine)
+      const testWidth = metrics.width
+
+      if (testWidth > maxWidth && currentLine !== '') {
+        lines.push(currentLine)
+        currentLine = words[i]
+      } else {
+        currentLine = testLine
+      }
+    }
+
+    if (currentLine !== '') {
+      lines.push(currentLine)
+    }
+
+    return lines
+  }
+
+  // Usage example:
+  // drawText(ctx, "This is a long text that will wrap", "red", canvas, 0, 24, 200)
 
   return { canvasRef, handleDownload }
 }
