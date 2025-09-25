@@ -43,7 +43,7 @@ export const useBannerCanvas = ({
       if (photo) {
         avatar.src = photo
         avatar.onload = () => {
-          const size = canvas.width * 0.7
+          const size = canvas.width * 0.6
           const x = (canvas.width - size) / 2
           const y = (canvas.height - size) / 2 + 13
 
